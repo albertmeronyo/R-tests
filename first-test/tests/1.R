@@ -93,7 +93,9 @@ library(effects)
 
 plot(effect('log(totalSize)', rm.1))
 # Tot en un!!
-plot(effect('log(avgGap)', rm.1), confint=FALSE, rug=FALSE)
+png("graphs/totalSize_sim_classifier.png")
+plot(effect('log(totalSize)', rm.1), confint=FALSE, rug=FALSE)
+dev.off()
 plot(allEffects(rm.1), rug=FALSE)
 
 # Ara les linials
