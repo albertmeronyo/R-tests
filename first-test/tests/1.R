@@ -1,4 +1,4 @@
-setwd('first-test')
+setwd('/home/amp/src/R-tests/first-test')
 f <- read.csv('data/features.csv')
 df <- data.frame(f)
 df$X <- NULL
@@ -7,7 +7,6 @@ df$X.2 <- NULL
 df$dataset <- NULL
 df$isTree <- NULL
 classifiers <- df$classifier
-df$classifier <- NULL
 c <- cor(df, use="na.or.complete")
 c <- cor(df[,-c(16:18)], use="complete.obs")
 c <- cor(df[4:nrow(df),], use="complete.obs")
@@ -22,6 +21,10 @@ require(foreign)
 require(nnet)
 require(ggplot2)
 require(reshape2)
+require(stargazer)
+require(car)
+library(arm)
+library(effects)
 
 # Predicting classifier (factorial) with the rest (continuous)
 # Answer: Multinomial Logistic Regression
@@ -79,7 +82,7 @@ rm.1b <- multinom(classifier2 ~ log(nSnapshots) + log(avgGap) + log(totalSize) +
 stargazer(rf, rr, type="html", align=TRUE)
 
 # Plot dels coeficients amb el 2*sd (per veure si trepitgen el 0)
-library(arm)
+
 pdf("graphs/coefs_linearmodel.pdf", width=7)
 coefplot(rr.1, main="", xlim=c(-4,2), mar=c(1,6,5.1,2))
 dev.off()
@@ -89,7 +92,7 @@ dev.off()
 # Les funcions es poden aproximar tan com vulguis amb polinomis...
 
 # Ara fem SIMULACIO (mostrar resultats dels models)
-library(effects)
+
 
 plot(effect('log(totalSize)', rm.1))
 # Tot en un!!
@@ -97,6 +100,10 @@ png("graphs/totalSize_sim_classifier.png")
 plot(effect('log(totalSize)', rm.1), confint=FALSE, rug=FALSE)
 dev.off()
 plot(allEffects(rm.1), rug=FALSE)
+
+png("graphs/sim_classifier_allFeatures.png", width=1200, height=800)
+plot(allEffects(rm.1), rug=FALSE, confint=FALSE)
+dev.off()
 
 # Ara les linials
 pdf("graphs/treedepth_vs_roc.pdf")
@@ -134,4 +141,5 @@ dev.off()
 rm.2 <- multinom(classifier2 ~ log(nSnapshots) + log(avgGap) + log(totalSize) + avgTreeDepth + ratioInstances + ratioStructural + ratioInserts, data=df)
 rm.3 <- multinom(classifier2 ~ log(nSnapshots) + log(avgGap) + log(totalSize) + avgTreeDepth + ratioInstances + ratioStructural + ratioDeletes, data=df)
 rm.4 <- multinom(classifier2 ~ log(nSnapshots) + log(avgGap) + log(totalSize) + avgTreeDepth + ratioInstances + ratioStructural + ratioComm, data=df)
-stargazer(rm.2, rm.3, rm.4, type='text', no.space=TRUE)
+stargazer(rm.1, rm.2, rm.3, rm.4, type='text', no.space=TRUE)
+plot(effect(term="avgGap",mod=rm.2,default.levels=20),multiline=TRUE)
