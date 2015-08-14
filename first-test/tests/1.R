@@ -1,4 +1,4 @@
-setwd('/home/amp/src/R-tests/first-test')
+setwd('~/src/R-tests/first-test')
 f <- read.csv('data/features.csv')
 df <- data.frame(f)
 df$X <- NULL
@@ -57,17 +57,17 @@ rm.1 <- multinom(classifier ~ log(nSnapshots) + log(avgGap) + log(totalSize) + a
 rm.1b <- multinom(classifier ~ log(nSnapshots) + log(avgGap) + log(totalSize) + avgTreeDepth + ratioInstancesVSIS, data=df)
 
 # Masses categories a la categorica de resposta; rebaixar. La recodifiquem.
-df$classifier2[df$classifier == "weka.classifiers.bayes.NaiveBayes" | 
+df$classifier2[df$classifier == "weka.classifiers.bayes.NaiveBayes" |
                        df$classifier == "weka.classifiers.bayes.BayesNet"] <- "bayes"
-df$classifier2[df$classifier == "weka.classifiers.functions.MultilayerPerceptron" | 
+df$classifier2[df$classifier == "weka.classifiers.functions.MultilayerPerceptron" |
                  df$classifier == "weka.classifiers.functions.SimpleLogistic" |
                  df$classifier == "weka.classifiers.functions.Logistic" |
                  df$classifier == "weka.classifiers.functions.SGD" |
                  df$classifier == "weka.classifiers.functions.VotedPerceptron"] <- "functions"
-df$classifier2[df$classifier == "weka.classifiers.rules.DecisionTable" | 
+df$classifier2[df$classifier == "weka.classifiers.rules.DecisionTable" |
                  df$classifier == "weka.classifiers.rules.OneR" |
                  df$classifier == "weka.classifiers.rules.JRip"] <- "rules"
-df$classifier2[df$classifier == "weka.classifiers.trees.HoeffdingTree" | 
+df$classifier2[df$classifier == "weka.classifiers.trees.HoeffdingTree" |
                  df$classifier == " weka.classifiers.trees.RandomForest" |
                  df$classifier == "weka.classifiers.trees.DecisionStump" |
                  df$classifier == "weka.classifiers.trees.J48"] <- "trees"
