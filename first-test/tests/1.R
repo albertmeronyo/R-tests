@@ -24,7 +24,7 @@ require(reshape2)
 require(stargazer)
 require(car)
 library(arm)
-library(effects)
+require(effects)
 
 # Predicting classifier (factorial) with the rest (continuous)
 # Answer: Multinomial Logistic Regression
@@ -142,4 +142,4 @@ rm.2 <- multinom(classifier2 ~ log(nSnapshots) + log(avgGap) + log(totalSize) + 
 rm.3 <- multinom(classifier2 ~ log(nSnapshots) + log(avgGap) + log(totalSize) + avgTreeDepth + ratioInstances + ratioStructural + ratioDeletes, data=df)
 rm.4 <- multinom(classifier2 ~ log(nSnapshots) + log(avgGap) + log(totalSize) + avgTreeDepth + ratioInstances + ratioStructural + ratioComm, data=df)
 stargazer(rm.1, rm.2, rm.3, rm.4, type='text', no.space=TRUE)
-plot(effect(term="avgGap",mod=rm.2,default.levels=20),multiline=TRUE)
+plot(effect(term="avgGap", mod=rm.2, default.levels=20),multiline=TRUE)
